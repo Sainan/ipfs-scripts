@@ -39,10 +39,9 @@ dnslink_to_cid() {
 	b64url=$(base64 < /tmp/dnspacket | tr -d '\n' | tr '+/' '-_' | tr -d '=')
 	wget -qO- "https://1.1.1.1/dns-query?dns=${b64url}" > /tmp/dnspacket
 
-	if [[ $(cat /tmp/dnspacket | tail -c 60) =~ dnslink=\/ipfs\/(.+) ]]; then
-		cid="${BASH_REMATCH[1]}"
-		echo $cid
-	fi
+	#cat /tmp/dnspacket | od -An -t x1
+
+	grep -aoP '(?<=dnslink=/ipfs/)([A-Za-z0-9]+)' /tmp/dnspacket | head -n1
 }
 
 if [[ $# -lt 1 ]]; then
@@ -52,7 +51,10 @@ fi
 
 while true; do
 	for dnslink in "$@"; do
-		ipfs pin add "$(dnslink_to_cid "$dnslink")"
+		cid=$(dnslink_to_cid "$dnslink")
+		if [[ $cid ]]; then
+			ipfs pin add $cid
+		fi
 	done
 	sleep 3600
 done
