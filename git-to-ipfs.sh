@@ -18,11 +18,12 @@ rm -f *.pack objects/pack/*
 # enable usage via dumb http
 git update-server-info
 
-# add to ipfs and pin
+# publish to ipfs
 if [[ $(ipfs add -r . | tail -n 1) =~ added\ (.+)\  ]]; then
 	cid="${BASH_REMATCH[1]}"
-	echo "added $cid"
-	ipfs pin add $cid
+	echo $cid
+	ipfs pin add $cid > /dev/null
+	ipfs routing provide $cid
 fi
 
 # deinit bare clone

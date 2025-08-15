@@ -1,3 +1,13 @@
-Scripts to simplify certain IPFS operations:
-- **dnslink-pin** takes one or more dnslink addresses, resolves them, pins them, and then does it again every hour. Perfect to support/distribute more dynamic content.
-- **git-to-ipfs** takes a repo URL, adds it to IPFS, and pins it. This basically follows [the official IPFS git guide](https://docs.ipfs.tech/how-to/host-git-repo/) with the addition of pinning.
+Scripts to simplify certain IPFS operations
+
+## git-to-ipfs.sh
+
+This is an all-in-one script to **mirror a Git repository to IPFS** based on [the official guide](https://docs.ipfs.tech/how-to/host-git-repo/) but it also pins the CID. Additionally, you can easily use this in your own scripts, e.g. to publish the updated CID to IPNS:
+```bash
+cid=$(./git-to-ipfs.sh https://github.com/Sainan/ipfs-scripts)
+ipfs name publish --key=ipfs-scripts $cid
+```
+
+## ipns-pin.sh
+
+This script **keeps dynamic content pinned via IPNS or DNSLink**. Each argument is resolved via `ipfs name resolve` and on success, the resulting CID is pinned. This script keeps running to repeat this process every hour.
