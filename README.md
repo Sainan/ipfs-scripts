@@ -7,7 +7,3 @@ This is an all-in-one script to **mirror a Git repository to IPFS** based on [th
 cid=$(./git-to-ipfs.sh https://github.com/Sainan/ipfs-scripts)
 ipfs name publish --key=ipfs-scripts $cid
 ```
-
-## ipns-pin.sh
-
-This script **keeps dynamic content pinned via IPNS or DNSLink**. Each argument is resolved via `ipfs name resolve` and on success, the resulting CID is pinned. This script keeps running to repeat this process every hour.
