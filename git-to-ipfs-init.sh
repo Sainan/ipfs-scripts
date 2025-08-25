@@ -11,6 +11,7 @@ git clone --mirror $1 tmp.git
 cd tmp.git
 
 # copy packs
+mkdir ../pack
 cp objects/pack/* ../pack
 
 # enable usage via dumb http
